@@ -4,7 +4,7 @@
 
 Data Visualization course project – Group Proposal
 
-🌐 Website: https://federicocerra.github.io/DataVisualizationProject/
+Website: https://federicocerra.github.io/DataVisualizationProject/
 
 ---
 
