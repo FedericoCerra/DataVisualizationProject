@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Adoption in EU Companies</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
 
@@ -39,6 +40,35 @@
       </p>
     </section>
 
+    <!-- SECTION 2: CHARTS -->
+    <section id="comparison">
+      <h2>2. Comparing AI adoption</h2>
+      <p class="section-subtitle">Countries, company sizes and sectors side by side</p>
+      <p>
+        In this section we compare the percentage of enterprises using at least one AI technology (for example
+        text mining, speech recognition, generative AI, image recognition or machine learning). If not stated
+        otherwise, the data refers to 2025. Move the mouse over the charts to see the exact values.
+      </p>
+
+      <!-- Chart 1: bar chart -->
+      <div class="chart-box">
+        <h3>Northern Europe leads, the East and South are behind</h3>
+        <p class="chart-description">Enterprises using AI by country, 2025 (%). The orange bar is the EU-27 average.</p>
+        <div id="bar-chart"></div>
+        <p class="note">In Denmark the share is about eight times higher than in Romania.</p>
+      </div>
+
+      <!-- Chart 2: grouped bar chart -->
+      <div class="chart-box">
+        <h3>Bigger companies use AI much more</h3>
+        <p class="chart-description">Enterprises using AI by company size, selected countries, 2025 (%)</p>
+        <div id="grouped-legend"></div>
+        <div id="grouped-chart"></div>
+        <p class="note">We selected the EU average, the two best countries, the four biggest economies and the last country.</p>
+      </div>
+
+    </section>
+
   </div>
 
   <!-- FOOTER -->
@@ -52,5 +82,8 @@
     </div>
   </footer>
 
+  <div id="tooltip"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
