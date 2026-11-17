@@ -122,3 +122,25 @@ For example, the EU share of enterprises using at least one AI technology was **
 Both datasets report the same last update date on Eurostat: **15 June 2026**. This provides a common reference point for our initial data collection, although we will still need to verify that the selected indicators and statistical definitions are comparable.
 
 We will take these limitations into account during the data preparation stage and adapt our visualizations accordingly.
+
+---
+
+## How to run
+
+The page loads CSV files with `d3.csv`, so it must be opened through a local server
+(double-clicking `index.html` does not work). From this folder run:
+
+```
+python -m http.server 8000
+```
+
+then open http://localhost:8000
+
+## Data
+
+Downloaded from the Eurostat API (last update 15 June 2026), filtered to the EU-27 countries:
+
+- `data/ai_by_size.csv` – dataset `isoc_eb_ai`: % of enterprises using at least one AI technology,
+  by company size, 2021–2025
+- `data/ai_by_sector.csv` – dataset `isoc_eb_ain2`: % of enterprises using at least 1, 2 or 3 AI
+  technologies, by economic sector, 2025
