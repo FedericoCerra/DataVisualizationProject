@@ -144,3 +144,12 @@ Downloaded from the Eurostat API (last update 15 June 2026), filtered to the EU-
   by company size, 2021–2025
 - `data/ai_by_sector.csv` – dataset `isoc_eb_ain2`: % of enterprises using at least 1, 2 or 3 AI
   technologies, by economic sector, 2025
+- `data/ai_barriers.csv` – dataset `isoc_eb_ai`: reasons for not using AI among enterprises that
+  considered using it, Italy and EU-27, 2025
+
+### Additional source (Focus on Italy)
+
+- The European House – Ambrosetti (TEHA) and Minsait, *"Lo stato dell'arte dell'Intelligenza Artificiale
+  nelle aziende italiane – Adozione, impatti e prospettive"* (2025), survey of about 280 large Italian companies.
+  [Study page](https://www.minsait.com/en/studies/artificial-intelligence-italy-2025-adoption-impacts-and-prospects).
+  Its figures are quoted in the text only: they are not comparable with Eurostat (different sample and definitions).

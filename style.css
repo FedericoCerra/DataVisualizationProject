@@ -117,6 +117,31 @@ h2 {
   font-weight: bold;
 }
 
+/* key figures (Italy section) */
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.fact {
+  flex: 1;
+  min-width: 180px;
+  background-color: #eef4fc;
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.fact p {
+  margin: 0;
+}
+
+.fact-number {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1f3b63;
+}
+
 /* tooltip */
 #tooltip {
   position: absolute;

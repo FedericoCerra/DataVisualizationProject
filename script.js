@@ -48,8 +48,9 @@ const grey = "#d3d1cb";
 // ============================================================
 Promise.all([
   d3.csv("data/ai_by_size.csv"),
-  d3.csv("data/ai_by_sector.csv")
-]).then(([sizeRows, sectorRows]) => {
+  d3.csv("data/ai_by_sector.csv"),
+  d3.csv("data/ai_barriers.csv")
+]).then(([sizeRows, sectorRows, barrierRows]) => {
 
   // convert the values to numbers (empty value = data not available)
   sizeRows.forEach(d => d.value = d.OBS_VALUE === "" ? null : +d.OBS_VALUE);
@@ -116,7 +117,25 @@ Promise.all([
     value: getSizeValue("EU27_2020", "GE10", year)
   }));
 
+  // ---------- Chart 6: reasons for not using AI, Italy vs EU-27, 2025 ----------
+  const barrierNames = {
+    E_AI_BLE: "Lack of expertise",
+    E_AI_BLEG: "Unclear legal consequences",
+    E_AI_BCDP: "Data protection & privacy concerns",
+    E_AI_BDDT: "Data not available or poor quality",
+    E_AI_BINC: "Not compatible with existing systems",
+    E_AI_BCST: "Costs too high",
+    E_AI_BEC: "Ethical concerns",
+    E_AI_BNU: "AI not useful for the company"
+  };
+  const barriersData = Object.keys(barrierNames).map(code => ({
+    reason: barrierNames[code],
+    italy: +barrierRows.find(d => d.indic_is === code && d.geo === "IT").OBS_VALUE,
+    eu: +barrierRows.find(d => d.indic_is === code && d.geo === "EU27_2020").OBS_VALUE
+  })).sort((a, b) => b.eu - a.eu);
+
   drawBarChart(countryData);
+  drawBarriersChart(barriersData);
   drawGroupedBarChart(sizeData);
   drawHeatmap(heatmapData, countryData.map(d => d.country), sectorCodes.map(c => sectorNames[c]));
   drawStackedChart(techData);
@@ -347,6 +366,58 @@ function drawWaffleChart(data) {
   });
 
   makeLegend("#waffle-legend", ["Uses AI", "Does not use AI"], [blue, grey]);
+}
+
+// ============================================================
+// CHART 6 - BARRIERS (horizontal grouped bar chart, Italy vs EU-27)
+// ============================================================
+function drawBarriersChart(data) {
+  const margin = { top: 30, right: 40, bottom: 10, left: 230 };
+  const width = 800 - margin.left - margin.right;
+  const height = 420 - margin.top - margin.bottom;
+
+  const keys = ["italy", "eu"];
+  const names = { italy: "Italy", eu: "EU-27" };
+  const color = d3.scaleOrdinal().domain(keys).range([blue, orange]);
+
+  const svg = d3.select("#barriers-chart")
+    .append("svg")
+    .attr("viewBox", "0 0 800 420")
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain([0, 80]).range([0, width]);
+  const y0 = d3.scaleBand().domain(data.map(d => d.reason)).range([0, height]).padding(0.25);
+  const y1 = d3.scaleBand().domain(keys).range([0, y0.bandwidth()]).padding(0.05);
+
+  svg.append("g").call(d3.axisTop(x).tickFormat(d => d + "%"));
+  svg.append("g").call(d3.axisLeft(y0));
+
+  const groups = svg.selectAll(".group")
+    .data(data)
+    .join("g")
+    .attr("transform", d => `translate(0,${y0(d.reason)})`);
+
+  groups.selectAll("rect")
+    .data(d => keys.map(key => ({ reason: d.reason, key: key, value: d[key] })))
+    .join("rect")
+    .attr("x", 0)
+    .attr("y", d => y1(d.key))
+    .attr("width", d => x(d.value))
+    .attr("height", y1.bandwidth())
+    .attr("fill", d => color(d.key))
+    .on("mousemove", (event, d) => showTooltip(event, `<b>${d.reason}</b><br>${names[d.key]}: ${d.value.toFixed(1)}%`))
+    .on("mouseout", hideTooltip);
+
+  groups.selectAll(".label")
+    .data(d => keys.map(key => ({ key: key, value: d[key] })))
+    .join("text")
+    .attr("class", "label")
+    .attr("x", d => x(d.value) + 4)
+    .attr("y", d => y1(d.key) + y1.bandwidth() / 2 + 4)
+    .text(d => Math.round(d.value));
+
+  makeLegend("#barriers-legend", ["Italy", "EU-27"], [blue, orange]);
 }
 
 // ============================================================
